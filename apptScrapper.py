@@ -30,11 +30,12 @@ for areas in bostonAreas:
             geotag = "NULL"
 
         
-        if int(price.strip("$")) >= 200 and geotag != "NULL" and location != "None":
+        if int(price.strip("$")) >= 200 and geotag != "NULL" and location:
             try:
                 cursor.execute(sql.format(id, name, url, price, location, geotag), )
                 mydb.commit()
-                print(id)
+                #print(id)
+                print(location)
             except:
                 print("FAILED TO WRITE " +id +" TO DATABASE")
             
