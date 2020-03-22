@@ -1,5 +1,4 @@
 import mysql.connector
-
 from craigslist import CraigslistHousing
 
 bostonAreas = ['gbs', 'nwb', 'bmw', 'nos', 'sob']
@@ -18,7 +17,7 @@ sql = ("""INSERT INTO `Apartments` (`ID`, `Name`, `URL`, `Price`, `Location`, `G
 for areas in bostonAreas:
     cl_h = CraigslistHousing(site='boston', area=areas, category='roo',
                       filters={'max_price': 2000, 'private_room': True})
-
+ 
     for result in cl_h.get_results(sort_by='newest', geotagged=True):
         id = result["id"]
         name = result["name"]
@@ -31,13 +30,11 @@ for areas in bostonAreas:
             geotag = "NULL"
 
         
-        try:
-            cursor.execute(sql.format(id, name, url, price, location, geotag), )
-            mydb.commit()
-            print(id)
-        except:
-            print("FAILED TO WRITE " +id +" TO DATABASE")
-        
-
-
-
+        if int(price.strip("$")) >= 200 and geotag != "NULL" and location != "None":
+            try:
+                cursor.execute(sql.format(id, name, url, price, location, geotag), )
+                mydb.commit()
+                print(id)
+            except:
+                print("FAILED TO WRITE " +id +" TO DATABASE")
+            
