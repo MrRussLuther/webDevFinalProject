@@ -6,7 +6,8 @@ bostonAreas = ['gbs', 'nwb', 'bmw', 'nos', 'sob']
 mydb = mysql.connector.connect(
     host = "localhost",
     user = "root",
-    database = "Budgeting App"
+    password = "pass",
+    database = "budgetingApp"
 )
 
 cursor = mydb.cursor()
@@ -22,7 +23,7 @@ for areas in bostonAreas:
         id = result["id"]
         name = result["name"]
         url = result["url"]
-        price = result["price"]
+        price = result["price"].strip("$")
         location = result["where"]
         if result["geotag"]:
             geotag = '{} {}'.format(result["geotag"][0], result["geotag"][1] )
@@ -34,8 +35,7 @@ for areas in bostonAreas:
             try:
                 cursor.execute(sql.format(id, name, url, price, location, geotag), )
                 mydb.commit()
-                #print(id)
-                print(location)
+                print(id)
             except:
                 print("FAILED TO WRITE " +id +" TO DATABASE")
             
